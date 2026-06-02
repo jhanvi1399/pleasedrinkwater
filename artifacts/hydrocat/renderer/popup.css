@@ -44,7 +44,7 @@ html, body {
 
 .window {
   width: 340px;
-  min-height: 420px;
+  min-height: 480px;
   background: var(--bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow);

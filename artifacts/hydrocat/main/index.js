@@ -111,9 +111,9 @@ function showPopup(initialState = 'idle') {
 
   popupWindow = new BrowserWindow({
     width: 340,
-    height: 420,
+    height: 500,
     x: sw - 360,
-    y: sh - 450,
+    y: sh - 530,
     frame: false,
     transparent: true,
     resizable: false,
