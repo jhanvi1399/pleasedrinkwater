@@ -75,8 +75,8 @@ function spawnConfetti() {
 const MESSAGES = {
   sleeping:    'Zzz… sweet dreams…',
   waking:      'Yaaawn… good morning!',
-  idle:        'Hey! Time to drink water 💧',
-  bouncing:    'Hey! Time to drink water 💧',
+  idle:        "it's itme to sip some water",
+  bouncing:    "it's itme to sip some water",
   happy:       'Yay! You drank water! 🎉',
   celebrating: 'Amazing streak! Keep it up! ✨',
   sad:         "Okay… don't forget later! 😿",
