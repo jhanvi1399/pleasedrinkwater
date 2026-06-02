@@ -11,4 +11,34 @@ title = "HydroCat Spritesheet (all 33 frames, 64×64 each)"
 id = "Nu1kI_eEMFLwaRnWMj3vu"
 uri = "file://artifacts/hydrocat/assets/icon.png"
 type = "image"
-title = "HydroCat App Icon (512×512)"
+title = "App icon (512×512 from idle_1)"
+
+[[outputs]]
+id = "Y1zuIz8yLkJLGE2maDHye"
+uri = "file://artifacts/hydrocat/assets/sprites/idle_1.png"
+type = "image"
+title = "idle_1 — sliced from approved sheet (128×128, transparent bg)"
+
+[[outputs]]
+id = "aXgIr0hk-D590nRi9gKsx"
+uri = "file://artifacts/hydrocat/assets/sprites/sleep_1.png"
+type = "image"
+title = "sleep_1"
+
+[[outputs]]
+id = "zUbskwhLJspJ9t5O8WZbT"
+uri = "file://artifacts/hydrocat/assets/sprites/bounce_1.png"
+type = "image"
+title = "bounce_1"
+
+[[outputs]]
+id = "bivRyJQQx5gsQv_xTRP6L"
+uri = "file://artifacts/hydrocat/assets/sprites/celebrate_1.png"
+type = "image"
+title = "celebrate_1"
+
+[[outputs]]
+id = "nDcbWwWXHIHFKrZgk1f43"
+uri = "file://artifacts/hydrocat/assets/sprites/sad_1.png"
+type = "image"
+title = "sad_1"

@@ -1,233 +1,167 @@
 {
   "sleep_1": {
-    "x": 0,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sleep_1.png"
+    "file": "sprites/sleep_1.png",
+    "width": 128,
+    "height": 128
   },
   "sleep_2": {
-    "x": 64,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sleep_2.png"
+    "file": "sprites/sleep_2.png",
+    "width": 128,
+    "height": 128
   },
   "sleep_3": {
-    "x": 128,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sleep_3.png"
+    "file": "sprites/sleep_3.png",
+    "width": 128,
+    "height": 128
   },
   "sleep_4": {
-    "x": 192,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sleep_4.png"
+    "file": "sprites/sleep_4.png",
+    "width": 128,
+    "height": 128
   },
   "wake_1": {
-    "x": 256,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/wake_1.png"
+    "file": "sprites/wake_1.png",
+    "width": 128,
+    "height": 128
   },
   "wake_2": {
-    "x": 320,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/wake_2.png"
+    "file": "sprites/wake_2.png",
+    "width": 128,
+    "height": 128
   },
   "wake_3": {
-    "x": 384,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/wake_3.png"
+    "file": "sprites/wake_3.png",
+    "width": 128,
+    "height": 128
   },
   "wake_4": {
-    "x": 448,
-    "y": 0,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/wake_4.png"
+    "file": "sprites/wake_4.png",
+    "width": 128,
+    "height": 128
   },
   "idle_1": {
-    "x": 0,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/idle_1.png"
+    "file": "sprites/idle_1.png",
+    "width": 128,
+    "height": 128
   },
   "idle_2": {
-    "x": 64,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/idle_2.png"
+    "file": "sprites/idle_2.png",
+    "width": 128,
+    "height": 128
   },
   "idle_3": {
-    "x": 128,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/idle_3.png"
+    "file": "sprites/idle_3.png",
+    "width": 128,
+    "height": 128
   },
   "idle_4": {
-    "x": 192,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/idle_4.png"
+    "file": "sprites/idle_4.png",
+    "width": 128,
+    "height": 128
   },
   "bounce_1": {
-    "x": 256,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/bounce_1.png"
+    "file": "sprites/bounce_1.png",
+    "width": 128,
+    "height": 128
   },
   "bounce_2": {
-    "x": 320,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/bounce_2.png"
+    "file": "sprites/bounce_2.png",
+    "width": 128,
+    "height": 128
   },
   "bounce_3": {
-    "x": 384,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/bounce_3.png"
+    "file": "sprites/bounce_3.png",
+    "width": 128,
+    "height": 128
   },
   "bounce_4": {
-    "x": 448,
-    "y": 64,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/bounce_4.png"
+    "file": "sprites/bounce_4.png",
+    "width": 128,
+    "height": 128
   },
   "happy_1": {
-    "x": 0,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/happy_1.png"
+    "file": "sprites/happy_1.png",
+    "width": 128,
+    "height": 128
   },
   "happy_2": {
-    "x": 64,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/happy_2.png"
+    "file": "sprites/happy_2.png",
+    "width": 128,
+    "height": 128
   },
   "happy_3": {
-    "x": 128,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/happy_3.png"
+    "file": "sprites/happy_3.png",
+    "width": 128,
+    "height": 128
   },
   "happy_4": {
-    "x": 192,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/happy_4.png"
+    "file": "sprites/happy_4.png",
+    "width": 128,
+    "height": 128
   },
   "celebrate_1": {
-    "x": 256,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/celebrate_1.png"
+    "file": "sprites/celebrate_1.png",
+    "width": 128,
+    "height": 128
   },
   "celebrate_2": {
-    "x": 320,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/celebrate_2.png"
+    "file": "sprites/celebrate_2.png",
+    "width": 128,
+    "height": 128
   },
   "celebrate_3": {
-    "x": 384,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/celebrate_3.png"
+    "file": "sprites/celebrate_3.png",
+    "width": 128,
+    "height": 128
   },
   "celebrate_4": {
-    "x": 448,
-    "y": 128,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/celebrate_4.png"
+    "file": "sprites/celebrate_4.png",
+    "width": 128,
+    "height": 128
   },
   "sad_1": {
-    "x": 0,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sad_1.png"
+    "file": "sprites/sad_1.png",
+    "width": 128,
+    "height": 128
   },
   "sad_2": {
-    "x": 64,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sad_2.png"
+    "file": "sprites/sad_2.png",
+    "width": 128,
+    "height": 128
   },
   "sad_3": {
-    "x": 128,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/sad_3.png"
+    "file": "sprites/sad_3.png",
+    "width": 128,
+    "height": 128
   },
   "blink": {
-    "x": 192,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/blink.png"
+    "file": "sprites/blink.png",
+    "width": 128,
+    "height": 128
   },
   "surprised": {
-    "x": 256,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/surprised.png"
+    "file": "sprites/surprised.png",
+    "width": 128,
+    "height": 128
   },
   "love": {
-    "x": 320,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/love.png"
+    "file": "sprites/love.png",
+    "width": 128,
+    "height": 128
   },
   "angry": {
-    "x": 384,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/angry.png"
+    "file": "sprites/angry.png",
+    "width": 128,
+    "height": 128
   },
   "thinking": {
-    "x": 448,
-    "y": 192,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/thinking.png"
+    "file": "sprites/thinking.png",
+    "width": 128,
+    "height": 128
   },
   "excited": {
-    "x": 0,
-    "y": 256,
-    "w": 64,
-    "h": 64,
-    "file": "sprites/excited.png"
+    "file": "sprites/excited.png",
+    "width": 128,
+    "height": 128
   }
 }

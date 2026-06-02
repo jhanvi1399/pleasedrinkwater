@@ -1,4 +1,4 @@
-const { nativeImage } = require('electron');
+'use strict';
 
 const ANIMATION_CONFIGS = {
   sleeping: {
@@ -41,6 +41,7 @@ const ANIMATION_CONFIGS = {
 class DockAnimator {
   constructor(app) {
     this.app = app;
+    // frames: name → nativeImage (loaded from sliced sprite PNGs)
     this.frames = {};
     this.currentState = 'sleeping';
     this.currentFrameIdx = 0;
@@ -49,6 +50,9 @@ class DockAnimator {
     this.ready = false;
   }
 
+  /**
+   * @param {Object} framesMap  name → nativeImage
+   */
   loadFrames(framesMap) {
     this.frames = framesMap;
     this.ready = true;
@@ -99,19 +103,16 @@ class DockAnimator {
   }
 
   _renderFrame() {
-    const config = ANIMATION_CONFIGS[this.currentState];
+    const config    = ANIMATION_CONFIGS[this.currentState];
     const frameName = config.frames[this.currentFrameIdx];
-    const dataUrl = this.frames[frameName];
+    const img       = this.frames[frameName]; // already a nativeImage
 
-    if (!dataUrl) return;
+    if (!img || img.isEmpty()) return;
 
     try {
-      const img = nativeImage.createFromDataURL(dataUrl);
-      if (!img.isEmpty()) {
-        this.app.dock.setIcon(img);
-      }
+      this.app.dock.setIcon(img);
     } catch (e) {
-      console.error('DockAnimator: failed to set icon', e);
+      console.error('DockAnimator: failed to set dock icon', e.message);
     }
   }
 

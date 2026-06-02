@@ -1,25 +1,28 @@
+'use strict';
+
 const { Tray, Menu, nativeImage, app } = require('electron');
-const path = require('path');
 
 class TrayManager {
   constructor(store, scheduler, onShowPopup) {
-    this.store = store;
-    this.scheduler = scheduler;
-    this.onShowPopup = onShowPopup;
-    this.tray = null;
-    this.updateTimer = null;
+    this.store        = store;
+    this.scheduler    = scheduler;
+    this.onShowPopup  = onShowPopup;
+    this.tray         = null;
+    this.updateTimer  = null;
   }
 
-  create(trayIconDataUrl) {
-    let icon;
+  /**
+   * @param {Electron.NativeImage} icon  — the idle_1 sprite nativeImage
+   */
+  create(icon) {
+    let trayIcon;
     try {
-      icon = nativeImage.createFromDataURL(trayIconDataUrl);
-      icon = icon.resize({ width: 16, height: 16 });
+      trayIcon = icon.resize({ width: 16, height: 16 });
     } catch {
-      icon = nativeImage.createEmpty();
+      trayIcon = nativeImage.createEmpty();
     }
 
-    this.tray = new Tray(icon);
+    this.tray = new Tray(trayIcon);
     this.tray.setToolTip('HydroCat');
 
     this._updateMenu();
@@ -29,91 +32,14 @@ class TrayManager {
     }, 30000);
   }
 
-  updateIcon(trayIconDataUrl) {
+  /**
+   * @param {Electron.NativeImage} icon
+   */
+  updateIcon(icon) {
     if (!this.tray) return;
     try {
-      let icon = nativeImage.createFromDataURL(trayIconDataUrl);
-      icon = icon.resize({ width: 16, height: 16 });
-      this.tray.setImage(icon);
+      this.tray.setImage(icon.resize({ width: 16, height: 16 }));
     } catch {}
-  }
-
-  _getTimeLabel() {
-    const isPaused = this.scheduler.isPaused();
-    if (isPaused) return '⏸ Reminders paused';
-
-    const remaining = this.scheduler.getTimeRemaining();
-    if (!remaining) return '🐱 HydroCat';
-
-    const { minutes, seconds } = remaining;
-    if (minutes > 0) {
-      return `💧 Next reminder in ${minutes}m ${seconds}s`;
-    }
-    return `💧 Next reminder in ${seconds}s`;
-  }
-
-  _updateMenu() {
-    if (!this.tray) return;
-
-    const isPaused = this.scheduler.isPaused();
-    const currentInterval = this.store.get('intervalMinutes');
-    const streak = this.store.get('streak');
-
-    const intervalOptions = [30, 60, 90, 120];
-
-    const menu = Menu.buildFromTemplate([
-      {
-        label: this._getTimeLabel(),
-        enabled: false,
-      },
-      {
-        label: `🏆 Streak: ${streak} drink${streak !== 1 ? 's' : ''}`,
-        enabled: false,
-      },
-      { type: 'separator' },
-      {
-        label: '🐱 Show HydroCat',
-        click: () => {
-          if (this.onShowPopup) this.onShowPopup();
-        },
-      },
-      { type: 'separator' },
-      {
-        label: isPaused ? '▶️ Resume reminders' : '⏸ Pause reminders',
-        click: () => {
-          if (isPaused) {
-            this.scheduler.resume();
-          } else {
-            this.scheduler.pause();
-          }
-          this._updateMenu();
-        },
-      },
-      {
-        label: '⏰ Reminder interval',
-        submenu: intervalOptions.map((mins) => ({
-          label: mins < 60
-            ? `${mins} minutes`
-            : `${mins / 60} hour${mins / 60 !== 1 ? 's' : ''}`,
-          type: 'radio',
-          checked: currentInterval === mins,
-          click: () => {
-            this.scheduler.setInterval(mins);
-            this._updateMenu();
-          },
-        })),
-      },
-      { type: 'separator' },
-      {
-        label: '🚪 Quit HydroCat',
-        click: () => {
-          app.quit();
-        },
-      },
-    ]);
-
-    this.tray.setContextMenu(menu);
-    this.tray.setToolTip(this._getTimeLabel());
   }
 
   refresh() {
@@ -123,9 +49,37 @@ class TrayManager {
   destroy() {
     if (this.updateTimer) {
       clearInterval(this.updateTimer);
+      this.updateTimer = null;
     }
-    if (this.tray) {
+    if (this.tray && !this.tray.isDestroyed()) {
       this.tray.destroy();
+      this.tray = null;
+    }
+  }
+
+  _updateMenu() {
+    const streak   = this.store.get('streak') || 0;
+    const lastDrank = this.store.get('lastDrank');
+    const nextDue   = this.scheduler.getNextReminderTime();
+
+    let nextLabel = 'No reminder set';
+    if (nextDue) {
+      const mins = Math.round((nextDue - Date.now()) / 60000);
+      nextLabel = mins <= 0 ? 'Reminder due!' : `Next reminder in ${mins} min`;
+    }
+
+    const menu = Menu.buildFromTemplate([
+      { label: `💧 Streak: ${streak} drink${streak !== 1 ? 's' : ''}`, enabled: false },
+      { label: lastDrank ? `Last drink: ${new Date(lastDrank).toLocaleTimeString()}` : 'No drinks recorded', enabled: false },
+      { label: nextLabel, enabled: false },
+      { type: 'separator' },
+      { label: 'I drank water 💧', click: () => this.onShowPopup() },
+      { type: 'separator' },
+      { label: 'Quit HydroCat', click: () => app.quit() },
+    ]);
+
+    if (this.tray && !this.tray.isDestroyed()) {
+      this.tray.setContextMenu(menu);
     }
   }
 }
