@@ -1,0 +1,95 @@
+Build a macOS desktop companion app called "HydroCat" using Electron.
+
+The app should feel like a tiny pixel-art pet that lives in my dock and keeps me hydrated.
+
+CORE EXPERIENCE
+
+* The dock icon is a pixelated cat.
+* The cat is animated directly in the dock icon.
+* Most of the time, the cat is sleeping peacefully.
+* Occasionally it blinks, twitches its tail, rolls over, or stretches.
+* Every 60 minutes, the cat wakes up and starts bouncing excitedly.
+* A native macOS notification appears saying:
+  "Hey human, time to drink water 💧"
+* Clicking the notification opens a small popup window with the cat.
+* The popup has two buttons:
+
+  * "I drank water"
+  * "Remind me later"
+
+When the user clicks "I drank water":
+
+* The cat performs a happy jump animation.
+* Confetti pixels appear briefly.
+* The hydration streak increases.
+
+PIXEL CAT DESIGN
+
+Create original pixel-art assets.
+
+Style:
+
+* Cozy retro Game Boy Advance aesthetic.
+* Cute and expressive.
+* Warm cream, orange, and brown color palette.
+* Soft pixel shading.
+* Rounded friendly features.
+* Big sleepy eyes.
+* Tiny pink nose.
+* Transparent background.
+
+Required animation states:
+
+1. Sleeping
+
+* Curled into a ball.
+* Slow breathing animation.
+* Occasional ear twitch.
+
+2. Waking Up
+
+* One eye opens.
+* Stretch animation.
+* Tail wiggle.
+
+3. Alert
+
+* Sitting upright.
+* Bright open eyes.
+* Small bounce loop.
+
+4. Happy
+
+* Excited jump.
+* Tail swishing.
+
+5. Celebration
+
+* Little spin.
+* Pixel hearts appear.
+
+APP FEATURES
+
+* Menu bar item showing:
+
+  * Time until next reminder.
+  * Pause reminders.
+  * Change reminder interval.
+* Settings persist locally.
+* Dark mode support.
+* Smooth sprite-sheet animations.
+* High-DPI Retina support.
+
+TECHNICAL REQUIREMENTS
+
+* Electron.
+* HTML, CSS, JavaScript.
+* Electron Builder for packaging.
+* Organize code into clear folders.
+* Generate all pixel-art assets automatically.
+* Include complete build instructions.
+* Include npm scripts for development and production.
+
+DELIVERABLE
+
+Generate a fully working Electron project that can be packaged into a real macOS .app file. The final result should feel like a delightful desktop pet, similar to classic virtual companions, but focused on reminding the user to drink water.
