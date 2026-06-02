@@ -12,25 +12,41 @@
     "pack": "electron-builder --mac --dir",
     "generate-sprites": "node scripts/generate-sprites.js"
   },
-  "dependencies": {
-    "pngjs": "^7.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "electron": "^33.0.0",
-    "electron-builder": "^25.0.0"
+    "electron-builder": "^25.0.0",
+    "pngjs": "^7.0.0"
   },
   "build": {
     "appId": "com.hydrocat.app",
     "productName": "HydroCat",
+    "asar": false,
     "mac": {
       "category": "public.app-category.utilities",
+      "icon": "assets/icon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlementsInherit": "build/entitlements.mac.plist",
       "target": [
         {
           "target": "dmg",
           "arch": ["arm64", "x64"]
         }
+      ]
+    },
+    "dmg": {
+      "title": "HydroCat",
+      "icon": "assets/icon.png",
+      "iconSize": 128,
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
       ],
-      "icon": "assets/icon.png"
+      "window": {
+        "width": 540,
+        "height": 380
+      }
     },
     "files": [
       "main/**/*",
@@ -38,8 +54,6 @@
       "assets/**/*",
       "package.json"
     ],
-    "extraResources": [
-      "assets/**/*"
-    ]
+    "afterSign": "scripts/notarize.js"
   }
 }
