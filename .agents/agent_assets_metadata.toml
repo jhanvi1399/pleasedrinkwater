@@ -1,0 +1,14 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "MvL1pJ9MMlks29xHUvNyd"
+uri = "file://artifacts/hydrocat/assets/spritesheet.png"
+type = "image"
+title = "HydroCat Spritesheet (all 33 frames, 64×64 each)"
+
+[[outputs]]
+id = "Nu1kI_eEMFLwaRnWMj3vu"
+uri = "file://artifacts/hydrocat/assets/icon.png"
+type = "image"
+title = "HydroCat App Icon (512×512)"
