@@ -129,20 +129,18 @@ html, body {
 }
 
 .cat-name {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--textMuted);
-  margin-bottom: 6px;
+  font-size: 28px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin: 0 0 4px;
 }
 
 .message {
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 22px;
   color: var(--text);
   line-height: 1.4;
   transition: opacity 0.3s;
-  min-height: 44px;
+  min-height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,27 +154,26 @@ html, body {
 .streak-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 10px;
   background: var(--bg2);
-  border-radius: 30px;
-  padding: 6px 16px;
+  border-radius: 12px;
+  padding: 10px 16px;
   border: 1px solid rgba(255,255,255,0.07);
 }
 
 .streak-icon {
-  font-size: 16px;
+  font-size: 22px;
 }
 
 .streak-count {
-  font-size: 20px;
-  font-weight: 900;
+  font-size: 32px;
   color: var(--accent);
 }
 
 .streak-label {
-  font-size: 11px;
+  font-size: 22px;
   color: var(--textMuted);
-  letter-spacing: 0.05em;
 }
 
 /* ── Buttons ── */
@@ -189,19 +186,18 @@ html, body {
 
 .btn {
   width: 100%;
-  padding: 13px 20px;
+  padding: 14px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.5px;
 }
 
 .btn:active {
