@@ -89,7 +89,6 @@ export function Popup() {
               gap: 10,
             }}
           >
-            <span style={{ fontSize: 22 }}>🏆</span>
             <span
               style={{
                 color: "#E9A883",
