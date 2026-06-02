@@ -1,6 +1,7 @@
 'use strict';
 
 const { app, BrowserWindow, ipcMain, nativeImage } = require('electron');
+app.setName('Please Drink Water');
 const path = require('path');
 const fs   = require('fs');
 

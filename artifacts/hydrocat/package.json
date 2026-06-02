@@ -1,7 +1,7 @@
 {
   "name": "@workspace/hydrocat",
   "version": "1.0.0",
-  "description": "HydroCat — a pixel-art cat that lives in your macOS Dock and keeps you hydrated",
+  "description": "Please Drink Water — a pixel-art cat that lives in your macOS Dock and keeps you hydrated",
   "main": "main/index.js",
   "private": true,
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "build": {
     "appId": "com.hydrocat.app",
-    "productName": "HydroCat",
+    "productName": "Please Drink Water",
     "asar": false,
     "mac": {
       "category": "public.app-category.utilities",
