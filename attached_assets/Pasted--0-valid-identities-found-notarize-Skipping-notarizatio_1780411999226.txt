@@ -1,0 +1,30 @@
+   0 valid identities found
+[notarize] Skipping notarization — set APPLE_ID, APPLE_APP_PASSWORD, and APPLE_TEAM_ID to enable it.
+  • building        target=DMG arch=x64 file=dist/HydroCat-1.0.0.dmg
+  • Detected arm64 process, HFS+ is unavailable. Creating dmg with APFS - supports Mac OSX 10.12+
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  • building block map  blockMapFile=dist/HydroCat-1.0.0-arm64.dmg.blockmap
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  • Above command failed, retrying 5 more times
+  ⨯ unable to execute hdiutil  args=["detach","-quiet","/Volumes/HydroCat"] code=undefined error=Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+  ⨯ Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+  failedTask=build stackTrace=Error: Exit code: 1. Command failed: hdiutil detach -quiet /Volumes/HydroCat
+
+    at /Users/jhanvibhatia/Downloads/projects/pleasedrinkwater/artifacts/hydrocat/node_modules/builder-util/src/util.ts:138:18
+    at ChildProcess.exithandler (node:child_process:424:5)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
