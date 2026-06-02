@@ -51,6 +51,13 @@ class Scheduler {
     notification.show();
 
     if (this.onReminder) this.onReminder('reminder');
+
+    // Always re-arm the next interval after firing, even if the user ignores
+    // the notification. "I drank water" and "Remind me later" will reset/
+    // override this timer via resetAfterDrink() and remindLater().
+    if (!this.store.get('isPaused')) {
+      this._scheduleNext();
+    }
   }
 
   remindLater(minutes = 15) {

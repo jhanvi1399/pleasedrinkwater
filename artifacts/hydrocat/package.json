@@ -9,9 +9,11 @@
     "start": "electron .",
     "build": "electron-builder --mac",
     "build:dir": "electron-builder --mac --dir",
-    "pack": "electron-builder --mac --dir"
+    "pack": "electron-builder --mac --dir",
+    "generate-sprites": "node scripts/generate-sprites.js"
   },
   "dependencies": {
+    "pngjs": "^7.0.0"
   },
   "devDependencies": {
     "electron": "^33.0.0",

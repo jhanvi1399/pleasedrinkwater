@@ -1,0 +1,233 @@
+{
+  "sleep_1": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sleep_1.png"
+  },
+  "sleep_2": {
+    "x": 128,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sleep_2.png"
+  },
+  "sleep_3": {
+    "x": 256,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sleep_3.png"
+  },
+  "sleep_4": {
+    "x": 384,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sleep_4.png"
+  },
+  "wake_1": {
+    "x": 512,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/wake_1.png"
+  },
+  "wake_2": {
+    "x": 640,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/wake_2.png"
+  },
+  "wake_3": {
+    "x": 768,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/wake_3.png"
+  },
+  "wake_4": {
+    "x": 896,
+    "y": 0,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/wake_4.png"
+  },
+  "idle_1": {
+    "x": 0,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/idle_1.png"
+  },
+  "idle_2": {
+    "x": 128,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/idle_2.png"
+  },
+  "idle_3": {
+    "x": 256,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/idle_3.png"
+  },
+  "idle_4": {
+    "x": 384,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/idle_4.png"
+  },
+  "bounce_1": {
+    "x": 512,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/bounce_1.png"
+  },
+  "bounce_2": {
+    "x": 640,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/bounce_2.png"
+  },
+  "bounce_3": {
+    "x": 768,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/bounce_3.png"
+  },
+  "bounce_4": {
+    "x": 896,
+    "y": 128,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/bounce_4.png"
+  },
+  "happy_1": {
+    "x": 0,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/happy_1.png"
+  },
+  "happy_2": {
+    "x": 128,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/happy_2.png"
+  },
+  "happy_3": {
+    "x": 256,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/happy_3.png"
+  },
+  "happy_4": {
+    "x": 384,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/happy_4.png"
+  },
+  "celebrate_1": {
+    "x": 512,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/celebrate_1.png"
+  },
+  "celebrate_2": {
+    "x": 640,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/celebrate_2.png"
+  },
+  "celebrate_3": {
+    "x": 768,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/celebrate_3.png"
+  },
+  "celebrate_4": {
+    "x": 896,
+    "y": 256,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/celebrate_4.png"
+  },
+  "sad_1": {
+    "x": 0,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sad_1.png"
+  },
+  "sad_2": {
+    "x": 128,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sad_2.png"
+  },
+  "sad_3": {
+    "x": 256,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/sad_3.png"
+  },
+  "blink": {
+    "x": 384,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/blink.png"
+  },
+  "surprised": {
+    "x": 512,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/surprised.png"
+  },
+  "love": {
+    "x": 640,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/love.png"
+  },
+  "angry": {
+    "x": 768,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/angry.png"
+  },
+  "thinking": {
+    "x": 896,
+    "y": 384,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/thinking.png"
+  },
+  "excited": {
+    "x": 0,
+    "y": 512,
+    "w": 128,
+    "h": 128,
+    "file": "sprites/excited.png"
+  }
+}
