@@ -10,7 +10,8 @@
     "build": "electron-builder --mac",
     "build:dir": "electron-builder --mac --dir",
     "pack": "electron-builder --mac --dir",
-    "slice-sprites": "node scripts/slice-sprites.js"
+    "slice-sprites": "node scripts/slice-sprites.js",
+    "generate-sprites": "node scripts/slice-sprites.js"
   },
   "dependencies": {},
   "devDependencies": {
