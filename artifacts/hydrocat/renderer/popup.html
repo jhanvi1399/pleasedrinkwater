@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HydroCat</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="window">
+    <button class="close-btn" id="closeBtn" title="Close">×</button>
+
+    <div class="cat-stage">
+      <canvas id="catCanvas" width="128" height="128"></canvas>
+      <div class="confetti-container" id="confettiContainer"></div>
+    </div>
+
+    <div class="message-area">
+      <p class="cat-name">HydroCat</p>
+      <p class="message" id="message">Hey! Time to drink water 💧</p>
+    </div>
+
+    <div class="streak-area">
+      <div class="streak-badge">
+        <span class="streak-icon">🏆</span>
+        <span class="streak-count" id="streakCount">0</span>
+        <span class="streak-label">drinks today</span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-primary" id="drankBtn">
+        <span>💧</span> I drank water!
+      </button>
+      <button class="btn btn-secondary" id="remindBtn">
+        <span>⏰</span> Remind me later
+      </button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

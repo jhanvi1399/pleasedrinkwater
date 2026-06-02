@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sprite Generator</title>
+</head>
+<body>
+<canvas id="c" width="128" height="128" style="display:none"></canvas>
+<script>
+// ─────────────────────────────────────────
+// HydroCat Pixel Art Sprite Generator
+// Draws all animation frames and sends them
+// to the main process via IPC.
+// ─────────────────────────────────────────
+
+const S = 4; // pixel size (each "pixel" = 4x4 physical pixels => 32x32 design on 128x128 canvas)
+const W = 128, H = 128;
+
+// Color palette
+const P = {
+  cream:     '#F7C9A5',
+  orange:    '#E9A883',
+  dkOrange:  '#D48A6A',
+  brown:     '#C47B5A',
+  dkBrown:   '#8D5A3C',
+  light:     '#F2D7C1',
+  pink:      '#F7A8C2',
+  shadow:    '#7A6A66',
+  black:     '#000000',
+  white:     '#FFFFFF',
+  mid:       '#B56B4A',
+  stripe:    '#C47B5A',
+  heart:     '#FF6B8A',
+  sky:       'rgba(0,0,0,0)',
+};
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Draw one macro-pixel
+function px(x, y, color) {
+  if (!color || color === P.sky) return;
+  ctx.fillStyle = color;
+  ctx.fillRect(x * S, y * S, S, S);
+}
+
+// Rect of macro-pixels
+function rect(x, y, w, h, color) {
+  if (!color || color === P.sky) return;
+  ctx.fillStyle = color;
+  ctx.fillRect(x * S, y * S, w * S, h * S);
+}
+
+function clear() {
+  ctx.clearRect(0, 0, W, H);
+}
+
+// ─── Body parts ────────────────────────────
+
+function drawEar(x, y, flick = false) {
+  // Left ear
+  const oy = flick ? -1 : 0;
+  rect(x,     y + oy, 2, 1, P.orange);
+  rect(x + 1, y - 1 + oy, 1, 1, P.orange);
+  px(x + 1,   y + oy, P.pink);
+  // Right ear
+  rect(x + 5, y + oy, 2, 1, P.orange);
+  rect(x + 5, y - 1 + oy, 1, 1, P.orange);
+  px(x + 6,   y + oy, P.pink);
+}
+
+function drawHead(x, y, eyeState = 'open', moodY = 0) {
+  // Head outline / base
+  rect(x + 1, y,     6, 1, P.orange);
+  rect(x,     y + 1, 8, 5, P.orange);
+  rect(x + 1, y + 6, 6, 1, P.orange);
+
+  // Forehead stripe
+  px(x + 3, y + 1, P.dkOrange);
+  px(x + 4, y + 1, P.dkOrange);
+
+  // Cheeks
+  px(x + 1, y + 4, P.cream);
+  px(x + 6, y + 4, P.cream);
+
+  // Nose
+  px(x + 3, y + 4, P.pink);
+  px(x + 4, y + 4, P.pink);
+
+  // Mouth
+  px(x + 3, y + 5, P.dkBrown);
+  px(x + 4, y + 5, P.dkBrown);
+
+  // Eyes
+  drawEyes(x, y, eyeState, moodY);
+}
+
+function drawEyes(x, y, state, moodY = 0) {
+  const ey = y + 2 + moodY;
+  if (state === 'open') {
+    // Left eye
+    px(x + 2, ey, P.black);
+    px(x + 2, ey + 1, P.black);
+    px(x + 3, ey, P.dkBrown);
+    px(x + 2, ey, P.black);
+    px(x + 2, ey, P.white); // shine
+    // Right eye
+    px(x + 5, ey, P.black);
+    px(x + 5, ey + 1, P.black);
+    px(x + 5, ey, P.white); // shine
+  } else if (state === 'closed') {
+    // Closed - just a line
+    rect(x + 2, ey + 1, 1, 1, P.dkBrown);
+    rect(x + 5, ey + 1, 1, 1, P.dkBrown);
+  } else if (state === 'halfopen') {
+    // Half open
+    px(x + 2, ey + 1, P.black);
+    px(x + 5, ey + 1, P.black);
+  } else if (state === 'happy') {
+    // Squint happy ^_^
+    rect(x + 2, ey + 1, 2, 1, P.dkBrown);
+    rect(x + 5, ey + 1, 2, 1, P.dkBrown);
+    px(x + 2, ey, P.dkBrown);
+    px(x + 6, ey, P.dkBrown);
+  } else if (state === 'sad') {
+    px(x + 2, ey, P.black);
+    px(x + 5, ey, P.black);
+    // Sad brows
+    px(x + 2, ey - 1, P.dkBrown);
+    px(x + 6, ey - 1, P.dkBrown);
+  } else if (state === 'surprised') {
+    // Wide eyes
+    rect(x + 1, ey, 2, 2, P.black);
+    rect(x + 5, ey, 2, 2, P.black);
+    px(x + 1, ey, P.white);
+    px(x + 5, ey, P.white);
+  }
+}
+
+function drawBody(x, y, puffY = 0) {
+  // Main body blob
+  rect(x + 1, y,     7, 1, P.orange);
+  rect(x,     y + 1, 9, 6, P.orange);
+  rect(x + 1, y + 7, 7, 1, P.orange);
+
+  // Belly (lighter center)
+  rect(x + 2, y + 2, 5, 4, P.cream);
+  px(x + 2, y + 2, P.orange);
+  px(x + 6, y + 2, P.orange);
+
+  // Stripes
+  px(x + 1, y + 1, P.dkOrange);
+  px(x + 7, y + 1, P.dkOrange);
+  px(x + 1, y + 3, P.dkOrange);
+  px(x + 7, y + 3, P.dkOrange);
+
+  // Paws at bottom
+  rect(x + 1, y + 7, 3, 1, P.orange);
+  rect(x + 5, y + 7, 3, 1, P.orange);
+  px(x + 2, y + 8, P.cream);
+  px(x + 5, y + 8, P.cream);
+}
+
+function drawTail(x, y, angle = 0) {
+  // angle: 0=right, 1=up-right, 2=curled
+  if (angle === 0) {
+    rect(x, y, 3, 1, P.orange);
+    px(x + 2, y - 1, P.cream);
+  } else if (angle === 1) {
+    rect(x, y - 1, 3, 1, P.orange);
+    px(x + 1, y - 2, P.cream);
+    px(x + 2, y - 3, P.cream);
+  } else if (angle === 2) {
+    // Curled tail (sleeping)
+    rect(x, y, 2, 1, P.orange);
+    px(x + 2, y, P.orange);
+    px(x + 2, y + 1, P.orange);
+    px(x + 1, y + 1, P.cream);
+  } else if (angle === 3) {
+    // Tail up
+    rect(x, y - 2, 1, 3, P.orange);
+    px(x + 1, y - 3, P.cream);
+  }
+}
+
+function drawCurledBody(x, y, breathe = 0) {
+  // Sleeping curled cat body
+  const by = y + breathe;
+  // Main round blob
+  rect(x + 2, by,     8, 1, P.orange);
+  rect(x + 1, by + 1, 10, 6, P.orange);
+  rect(x + 2, by + 7, 8, 1, P.orange);
+  // Belly
+  rect(x + 3, by + 2, 6, 4, P.cream);
+  // Stripes
+  px(x + 2, by + 1, P.dkOrange);
+  px(x + 9, by + 1, P.dkOrange);
+  // Face tucked in (right side)
+  rect(x + 7, by + 2, 3, 3, P.orange);
+  px(x + 8, by + 3, P.black); // eye closed
+  px(x + 9, by + 3, P.black);
+  // Nose
+  px(x + 8, by + 4, P.pink);
+  // Paws visible
+  rect(x + 3, by + 7, 2, 1, P.orange);
+  rect(x + 7, by + 7, 2, 1, P.orange);
+  // Tail wraps around
+  rect(x + 1, by + 3, 1, 4, P.orange);
+  px(x + 1, by + 2, P.cream);
+}
+
+// ─── Frame definitions ─────────────────────
+
+const FRAME_SIZE = 128;
+
+function renderFrame(drawFn) {
+  clear();
+  drawFn();
+  return canvas.toDataURL('image/png');
+}
+
+const frames = {};
+
+// ── SLEEP frames (cat curled, breathing animation) ──
+const sleepPoses = [
+  { breathe: 0, earFlick: false },
+  { breathe: 1, earFlick: false },
+  { breathe: 1, earFlick: false },
+  { breathe: 0, earFlick: true  },
+];
+
+sleepPoses.forEach(({ breathe, earFlick }, i) => {
+  frames[`sleep_${i + 1}`] = renderFrame(() => {
+    // Base position: cat curled in lower-center
+    const cx = 10, cy = 12;
+    drawCurledBody(cx, cy, breathe);
+    // Small ears on top
+    const oy = earFlick ? -1 : 0;
+    px(cx + 8, cy + oy, P.orange);
+    px(cx + 9, cy + oy, P.orange);
+    px(cx + 10, cy + 1 + oy, P.orange);
+    px(cx + 9, cy + 1 + oy, P.pink);
+    // Zzz bubbles
+    if (i < 2) {
+      ctx.font = 'bold 10px monospace';
+      ctx.fillStyle = P.shadow;
+      ctx.fillText('z', (cx + 12) * S, (cy + 1) * S);
+      if (i === 1) ctx.fillText('Z', (cx + 14) * S, (cy - 1) * S);
+    }
+    // Tail
+    drawTail(cx - 1, cy + 5, 2);
+  });
+});
+
+// ── WAKE frames (waking up animation) ──
+const wakePoses = [
+  { eyeState: 'closed',   stretch: 0, tailAngle: 2 },
+  { eyeState: 'halfopen', stretch: 0, tailAngle: 1 },
+  { eyeState: 'halfopen', stretch: 1, tailAngle: 1 },
+  { eyeState: 'open',     stretch: 0, tailAngle: 3 },
+];
+
+wakePoses.forEach(({ eyeState, stretch, tailAngle }, i) => {
+  frames[`wake_${i + 1}`] = renderFrame(() => {
+    const hx = 11, hy = 6 - stretch;
+    const bx = 9,  by = 14 - stretch;
+    drawEar(hx, hy);
+    drawHead(hx, hy + 1, eyeState);
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, tailAngle);
+  });
+});
+
+// ── IDLE frames (alert sitting, blinking) ──
+const idlePoses = [
+  { eyeState: 'open',   tailAngle: 0, tailDx: 0 },
+  { eyeState: 'open',   tailAngle: 0, tailDx: 0 },
+  { eyeState: 'closed', tailAngle: 0, tailDx: 0 },
+  { eyeState: 'open',   tailAngle: 1, tailDx: 0 },
+];
+
+idlePoses.forEach(({ eyeState, tailAngle }, i) => {
+  frames[`idle_${i + 1}`] = renderFrame(() => {
+    const hx = 11, hy = 5;
+    const bx = 9,  by = 13;
+    drawEar(hx, hy);
+    drawHead(hx, hy + 1, eyeState);
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, tailAngle);
+  });
+});
+
+// ── BOUNCE frames (reminder, bouncing up and down) ──
+const bounceDy = [0, -2, -3, -2];
+bounceDy.forEach((dy, i) => {
+  frames[`bounce_${i + 1}`] = renderFrame(() => {
+    const hx = 11, hy = 5 + dy;
+    const bx = 9,  by = 13 + dy;
+    drawEar(hx, hy);
+    drawHead(hx, hy + 1, 'surprised');
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, 3);
+    // Shadow on ground
+    if (dy < 0) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse((bx + 4) * S, 24 * S, (3 + dy * 0.5) * S, 0.8 * S, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+});
+
+// ── HAPPY frames (excited jump) ──
+const happyDy = [-1, -4, -6, -4];
+happyDy.forEach((dy, i) => {
+  frames[`happy_${i + 1}`] = renderFrame(() => {
+    const hx = 11, hy = 5 + dy;
+    const bx = 9,  by = 13 + dy;
+    drawEar(hx, hy, i % 2 === 0);
+    drawHead(hx, hy + 1, 'happy');
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, 3);
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    ctx.beginPath();
+    ctx.ellipse((bx + 4) * S, 24 * S, (3 + dy * 0.3) * S, 0.8 * S, 0, 0, Math.PI * 2);
+    ctx.fill();
+  });
+});
+
+// ── CELEBRATE frames (spin + hearts) ──
+const celebratePoses = [
+  { dx: 0, dy: -2, hearts: [[20,4], [8, 2]] },
+  { dx: 1, dy: -4, hearts: [[22,3], [7, 3]] },
+  { dx: 0, dy: -5, hearts: [[21,2], [6, 4]] },
+  { dx: -1, dy: -3, hearts: [[23,4],[5, 2]] },
+];
+celebratePoses.forEach(({ dx, dy, hearts }, i) => {
+  frames[`celebrate_${i + 1}`] = renderFrame(() => {
+    const hx = 11 + dx, hy = 5 + dy;
+    const bx = 9 + dx,  by = 13 + dy;
+    drawEar(hx, hy, i % 2 === 0);
+    drawHead(hx, hy + 1, 'happy');
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, 3);
+    // Pixel hearts
+    hearts.forEach(([hx2, hy2]) => {
+      ctx.fillStyle = P.heart;
+      ctx.fillRect(hx2 * S - 1, hy2 * S - 1, 3, 3);
+      ctx.fillRect(hx2 * S + 2, hy2 * S - 1, 3, 3);
+      ctx.fillRect(hx2 * S - 1, hy2 * S + 2, 7, 4);
+      ctx.fillRect(hx2 * S + 1, hy2 * S + 6, 3, 3);
+    });
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.10)';
+    ctx.beginPath();
+    ctx.ellipse((bx + 4) * S, 24 * S, 3 * S, 0.7 * S, 0, 0, Math.PI * 2);
+    ctx.fill();
+  });
+});
+
+// ── SAD frames ──
+const sadPoses = [
+  { eyeState: 'sad', tearDrop: false },
+  { eyeState: 'sad', tearDrop: true  },
+  { eyeState: 'sad', tearDrop: false },
+];
+sadPoses.forEach(({ eyeState, tearDrop }, i) => {
+  frames[`sad_${i + 1}`] = renderFrame(() => {
+    const hx = 11, hy = 6;
+    const bx = 9,  by = 14;
+    // Drooping ears
+    rect(hx,     hy,     2, 1, P.orange);
+    rect(hx + 6, hy,     2, 1, P.orange);
+    // Ears tilted down
+    px(hx - 1,   hy + 1, P.orange);
+    px(hx + 8,   hy + 1, P.orange);
+    drawHead(hx, hy + 1, eyeState);
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, 0);
+    if (tearDrop) {
+      ctx.fillStyle = '#88CCFF';
+      ctx.fillRect((hx + 2) * S, (hy + 5) * S, S, S * 2);
+      ctx.fillRect((hx + 6) * S, (hy + 5) * S, S, S * 2);
+    }
+  });
+});
+
+// ── Extra expressions ──
+['blink', 'surprised', 'love', 'angry', 'thinking', 'excited'].forEach((name, i) => {
+  const eyeMap = {
+    blink: 'closed', surprised: 'surprised', love: 'happy',
+    angry: 'sad', thinking: 'halfopen', excited: 'happy'
+  };
+  frames[name] = renderFrame(() => {
+    const hx = 11, hy = 5;
+    const bx = 9, by = 13;
+    drawEar(hx, hy);
+    drawHead(hx, hy + 1, eyeMap[name] || 'open');
+    drawBody(bx, by);
+    drawTail(bx + 9, by + 3, name === 'excited' ? 3 : 0);
+    if (name === 'love') {
+      ctx.fillStyle = P.heart;
+      ctx.fillRect(14 * S, 4 * S, 3, 3); ctx.fillRect(17 * S, 4 * S, 3, 3);
+      ctx.fillRect(13 * S, 7 * S, 9, 5);
+      ctx.fillRect(15 * S, 12 * S, 5, 5);
+    }
+  });
+});
+
+// ── Tray icon (simple cat face) ──
+frames['tray'] = renderFrame(() => {
+  clear();
+  const hx = 12, hy = 11;
+  drawEar(hx, hy);
+  drawHead(hx, hy + 1, 'open');
+});
+
+// Send all frames to main process
+window.hydrocat.sendSprites(frames);
+</script>
+</body>
+</html>

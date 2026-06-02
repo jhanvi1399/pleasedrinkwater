@@ -1,0 +1,235 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cream:      #F7C9A5;
+  --orange:     #E9A883;
+  --dkOrange:   #D48A6A;
+  --brown:      #C47B5A;
+  --dkBrown:    #8D5A3C;
+  --light:      #F2D7C1;
+  --pink:       #F7A8C2;
+  --bg:         #2A1F18;
+  --bg2:        #3A2B20;
+  --text:       #F2D7C1;
+  --textMuted:  #B5946A;
+  --accent:     #E9A883;
+  --btnPrimary: #C47B5A;
+  --btnSecond:  #3A2B20;
+  --radius:     16px;
+  --shadow:     0 8px 40px rgba(0,0,0,0.55);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:       #FFF5EA;
+    --bg2:      #FFE8D0;
+    --text:     #4A2E18;
+    --textMuted:#8D5A3C;
+    --btnSecond:#EDD9C3;
+  }
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: 'Courier New', 'Courier', monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+.window {
+  width: 340px;
+  min-height: 420px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 24px 24px;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: windowPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes windowPop {
+  from { transform: scale(0.85) translateY(8px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);   opacity: 1; }
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--textMuted);
+  font-size: 22px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+.close-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+/* ── Cat stage ── */
+.cat-stage {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin-bottom: 12px;
+  image-rendering: pixelated;
+}
+
+#catCanvas {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.confetti-container {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.confetti-pixel {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0)    rotate(0deg);    opacity: 1;   }
+  80%  { opacity: 1; }
+  100% { transform: translateY(120px) rotate(720deg); opacity: 0; }
+}
+
+/* ── Message area ── */
+.message-area {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cat-name {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--textMuted);
+  margin-bottom: 6px;
+}
+
+.message {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text);
+  line-height: 1.4;
+  transition: opacity 0.3s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Streak ── */
+.streak-area {
+  margin-bottom: 20px;
+}
+
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg2);
+  border-radius: 30px;
+  padding: 6px 16px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.streak-icon {
+  font-size: 16px;
+}
+
+.streak-count {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.streak-label {
+  font-size: 11px;
+  color: var(--textMuted);
+  letter-spacing: 0.05em;
+}
+
+/* ── Buttons ── */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn {
+  width: 100%;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--btnPrimary);
+  color: var(--light);
+  box-shadow: 0 4px 16px rgba(196, 123, 90, 0.4);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(196, 123, 90, 0.55);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--btnSecond);
+  color: var(--textMuted);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.btn-secondary:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}

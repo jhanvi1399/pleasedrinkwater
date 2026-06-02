@@ -1,36 +1,43 @@
-# [Project name]
+# HydroCat
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A pixel-art cat desktop companion that lives in your macOS Dock and reminds you to drink water every hour.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm --filter @workspace/hydrocat run dev` — launch HydroCat in Electron (macOS only)
+- `pnpm --filter @workspace/hydrocat run build` — package into a macOS .dmg / .app
+- `pnpm --filter @workspace/hydrocat run build:dir` — build unpacked .app (faster, no installer)
+- `pnpm run typecheck` — typecheck all packages
+- `pnpm install` — install all dependencies (including Electron)
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- pnpm workspaces, Node.js 24
+- **HydroCat**: Electron 33, plain HTML/CSS/JS (no bundler needed for main process)
+- **Sprite generation**: HTML5 Canvas API (runs inside a hidden Electron BrowserWindow on first launch)
+- **Packaging**: electron-builder 25 (macOS .dmg target)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/hydrocat/main/index.js` — Electron main process entry point
+- `artifacts/hydrocat/main/DockAnimator.js` — Dock icon animation state machine
+- `artifacts/hydrocat/main/Scheduler.js` — Hydration reminder timer + macOS notifications
+- `artifacts/hydrocat/main/TrayManager.js` — Menu bar tray item
+- `artifacts/hydrocat/main/Store.js` — Settings persistence (userData JSON)
+- `artifacts/hydrocat/main/preload.js` — IPC bridge (contextBridge)
+- `artifacts/hydrocat/renderer/sprite-generator.html` — Generates all pixel-art frames on launch
+- `artifacts/hydrocat/renderer/popup.html/css/js` — Hydration reminder popup window
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- **Sprites generated at runtime via hidden BrowserWindow**: Avoids native canvas dependencies (like `node-canvas`). On first launch, a hidden Electron window runs the sprite generator, draws all frames to an HTML5 Canvas, and sends data URLs back to main via IPC.
+- **nativeImage for dock icon animation**: Each animation frame is a base64 PNG data URL passed to `nativeImage.createFromDataURL()`, then set via `app.dock.setIcon()` on a timer.
+- **No external runtime dependencies**: The app runs with only Electron as a runtime — no Express, no database, no bundler.
+- **Settings stored in userData JSON**: Uses `app.getPath('userData')` + plain `fs` to persist interval, streak, and pause state without any npm packages.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+HydroCat is a macOS Dock companion app. A pixel-art cat sleeps in your Dock, occasionally waking up and stretching. Every 60 minutes (configurable) it bounces excitedly and fires a native notification: "Hey human, time to drink water 💧". Clicking the notification or Dock icon opens a popup with action buttons. Tracking a hydration streak motivates consistent drinking.
 
 ## User preferences
 
@@ -38,8 +45,12 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- **macOS only**: `app.dock`, `app.dock.setIcon()`, and vibrancy effects are macOS-specific. The app will error on Linux/Windows.
+- **Notifications on macOS**: The app needs to be running as a proper `.app` bundle for notifications to work reliably. In dev mode (`electron .`), they work if the user has granted permission.
+- **Sprite generation timing**: On very slow machines, the sprite generator window might take a moment. The dock icon shows after `sprites-generated` IPC fires.
+- **electron and electron-builder are in `onlyBuiltDependencies`** in pnpm-workspace.yaml — required for their postinstall scripts to run.
 
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See `artifacts/hydrocat/README.md` for end-user instructions and folder structure
+- See the `pnpm-workspace` skill for workspace structure details
