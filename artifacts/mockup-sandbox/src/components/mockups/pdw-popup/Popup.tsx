@@ -38,7 +38,7 @@ export function Popup() {
             justifyContent: "center",
             fontFamily: "inherit",
           }}
-        >
+          className="text-[#ffffff]">
           ×
         </button>
 
@@ -63,9 +63,7 @@ export function Popup() {
               margin: "0 0 4px",
               fontFamily: "'VT323', monospace",
             }}
-          >
-            Meowdration
-          </p>
+          >meowdration is back</p>
           <p
             style={{
               color: "#F2D7C1",
@@ -74,7 +72,7 @@ export function Popup() {
               fontFamily: "'VT323', monospace",
             }}
           >
-            Hey! Time to drink water 💧
+            it's itme to sip some water
           </p>
         </div>
 
@@ -108,7 +106,7 @@ export function Popup() {
                 fontFamily: "'VT323', monospace",
               }}
             >
-              drinks today
+              sip points earned today
             </span>
           </div>
         </div>
@@ -118,7 +116,7 @@ export function Popup() {
           <button
             style={{
               background: "#C47B5A",
-              color: "#F2D7C1",
+              color: "#ffffff",
               border: "none",
               borderRadius: 12,
               padding: "14px 20px",
@@ -132,12 +130,12 @@ export function Popup() {
               letterSpacing: 0.5,
             }}
           >
-            <span>💧</span> I drank water!
+            <span>🐠</span> I drank water!
           </button>
           <button
             style={{
               background: "#3A2B20",
-              color: "#B5946A",
+              color: "#ffffff",
               border: "none",
               borderRadius: 12,
               padding: "14px 20px",
@@ -151,7 +149,7 @@ export function Popup() {
               letterSpacing: 0.5,
             }}
           >
-            <span>⏰</span> Remind me later
+            <span>🫧</span> Remind me later
           </button>
         </div>
       </div>
