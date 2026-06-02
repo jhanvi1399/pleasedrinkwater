@@ -1,0 +1,33 @@
+cat /Users/jhanvibhatia/.npm/_logs/2026-06-02T15_56_05_258Z-debug-0.log
+0 verbose cli /Users/jhanvibhatia/.nvm/versions/node/v24.10.0/bin/node /Users/jhanvibhatia/.nvm/versions/node/v24.10.0/bin/npm
+1 info using npm@11.6.1
+2 info using node@v24.10.0
+3 silly config load:file:/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/jhanvibhatia/Downloads/projects/pleasedrinkwater/artifacts/hydrocat/.npmrc
+5 silly config load:file:/Users/jhanvibhatia/.npmrc
+6 silly config load:file:/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/etc/npmrc
+7 verbose title npm run generate-sprites
+8 verbose argv "run" "generate-sprites"
+9 verbose logfile logs-max:10 dir:/Users/jhanvibhatia/.npm/_logs/2026-06-02T15_56_05_258Z-
+10 verbose logfile /Users/jhanvibhatia/.npm/_logs/2026-06-02T15_56_05_258Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 verbose stack Error: Missing script: "generate-sprites"
+13 verbose stack
+13 verbose stack To see a list of scripts, run:
+13 verbose stack   npm run
+13 verbose stack     at #run (/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/lib/node_modules/npm/lib/commands/run.js:115:13)
+13 verbose stack     at async RunScript.exec (/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/lib/node_modules/npm/lib/commands/run.js:44:7)
+13 verbose stack     at async Npm.exec (/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/lib/node_modules/npm/lib/npm.js:208:9)
+13 verbose stack     at async module.exports (/Users/jhanvibhatia/.nvm/versions/node/v24.10.0/lib/node_modules/npm/lib/cli/entry.js:67:5)
+14 error Missing script: "generate-sprites"
+14 error
+14 error To see a list of scripts, run:
+14 error   npm run
+15 verbose cwd /Users/jhanvibhatia/Downloads/projects/pleasedrinkwater/artifacts/hydrocat
+16 verbose os Darwin 24.6.0
+17 verbose node v24.10.0
+18 verbose npm  v11.6.1
+19 verbose exit 1
+20 verbose code 1
+21 error A complete log of this run can be found in: /Users/jhanvibhatia/.npm/_logs/2026-06-02T15_56_05_258Z-debug-0.log

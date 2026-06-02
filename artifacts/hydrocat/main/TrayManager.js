@@ -58,9 +58,9 @@ class TrayManager {
   }
 
   _updateMenu() {
-    const streak   = this.store.get('streak') || 0;
+    const streak    = this.store.get('streak') || 0;
     const lastDrank = this.store.get('lastDrank');
-    const nextDue   = this.scheduler.getNextReminderTime();
+    const nextDue   = this.scheduler.nextReminderAt; // millisecond timestamp or null
 
     let nextLabel = 'No reminder set';
     if (nextDue) {

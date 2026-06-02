@@ -94,7 +94,7 @@ html, body {
   image-rendering: pixelated;
 }
 
-#catCanvas {
+#catSprite {
   width: 128px;
   height: 128px;
   image-rendering: pixelated;
