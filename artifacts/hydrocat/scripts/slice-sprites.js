@@ -27,10 +27,10 @@ const ICON_OUT  = path.join(ROOT, 'assets', 'icon.png');
 
 const OUT_SIZE  = 128;   // sprite output resolution (nearest-neighbour upscale)
 const ICON_SIZE = 512;   // app icon output resolution
+const CAT_PAD   = 8;     // transparent padding around the tight cat crop (px)
 
 // ─── Frame coordinates ────────────────────────────────────────────────────────
-// Measured by automated connected-component scan of the 1536×1024 reference.
-// Each entry is the tight bounding box of the cat pixels (background excluded).
+// Generous bounding boxes — the slicer tight-crops to cat pixels automatically.
 
 const FRAMES = {
   // 1. SLEEPING
@@ -83,69 +83,109 @@ const FRAMES = {
   excited:     { x:  602, y: 908, w:  71, h:  64 },
 };
 
-// ─── Background removal (flood-fill from the four corners) ───────────────────
+// ─── Background removal ───────────────────────────────────────────────────────
+//
+// The spritesheet has a uniform cream background ≈ (252, 242, 233).
+// We hardcode this colour instead of sampling corners, because some crops
+// have divider lines in their corners that would corrupt the colour estimate.
+//
+// The flood fill is seeded from the ENTIRE perimeter of the crop (not just
+// 4 corners) so it can enter even if one edge is partially non-background.
 
-const BG_TOL = 35; // colour tolerance for background detection
+const BG     = [252, 242, 233]; // known cream bg of the approved spritesheet
+const BG_TOL = 38;              // per-channel tolerance
 
-function sampleBgColor(data, w, h) {
-  // Pixel indices for the four corners of a w×h image
-  const corners = [
-    0,                      // top-left
-    w - 1,                  // top-right
-    (h - 1) * w,            // bottom-left
-    (h - 1) * w + (w - 1), // bottom-right
-  ];
-  let r = 0, g = 0, b = 0;
-  for (const idx of corners) {
-    r += data[idx * 4];
-    g += data[idx * 4 + 1];
-    b += data[idx * 4 + 2];
-  }
-  return [Math.round(r / 4), Math.round(g / 4), Math.round(b / 4)];
-}
-
-function isBgPx(data, i, bg) {
-  const a = data[i + 3];
-  if (a < 128) return true;
+function isBgPx(data, i) {
+  if (data[i + 3] < 128) return true; // already transparent
   return (
-    Math.abs(data[i]     - bg[0]) < BG_TOL &&
-    Math.abs(data[i + 1] - bg[1]) < BG_TOL &&
-    Math.abs(data[i + 2] - bg[2]) < BG_TOL
+    Math.abs(data[i]     - BG[0]) <= BG_TOL &&
+    Math.abs(data[i + 1] - BG[1]) <= BG_TOL &&
+    Math.abs(data[i + 2] - BG[2]) <= BG_TOL
   );
 }
 
 function removeBg(data, w, h) {
   const out     = Buffer.from(data);
-  const bg      = sampleBgColor(out, w, h);
   const visited = new Uint8Array(w * h);
-  const stack   = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]];
+
+  // Seed stack with every pixel on the perimeter
+  const stack = [];
+  for (let x = 0; x < w; x++) {
+    stack.push(x, 0);
+    stack.push(x, h - 1);
+  }
+  for (let y = 1; y < h - 1; y++) {
+    stack.push(0, y);
+    stack.push(w - 1, y);
+  }
 
   while (stack.length) {
-    const [x, y] = stack.pop();
+    const y = stack.pop();
+    const x = stack.pop();
     if (x < 0 || x >= w || y < 0 || y >= h) continue;
     const pos = y * w + x;
     if (visited[pos]) continue;
-    const i = pos * 4;
-    if (!isBgPx(out, i, bg)) continue;
     visited[pos] = 1;
-    out[i + 3] = 0; // transparent
-    stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    if (!isBgPx(out, pos * 4)) continue; // not background — stop spreading
+    out[pos * 4 + 3] = 0;                // erase background pixel
+    stack.push(x + 1, y, x - 1, y, x, y + 1, x, y - 1);
   }
   return out;
 }
 
+// ─── Tight crop ──────────────────────────────────────────────────────────────
+//
+// After background removal, find the smallest rectangle containing all opaque
+// pixels, add uniform padding, then square the canvas by centering the cat.
+// This ensures all cats are consistently framed regardless of how large or
+// eccentric the original bounding box was (motion lines, floating sparkles, etc.)
+
+function tightSquare(data, w, h, pad) {
+  let minX = w, maxX = -1, minY = h, maxY = -1;
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (data[(y * w + x) * 4 + 3] > 0) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if (maxX < 0) return { data: Buffer.alloc(1 * 1 * 4, 0), size: 1 }; // empty
+
+  const catW = maxX - minX + 1;
+  const catH = maxY - minY + 1;
+  const side  = Math.max(catW, catH) + pad * 2;
+
+  // Center cat within the square canvas
+  const ox = Math.floor((side - catW) / 2);
+  const oy = Math.floor((side - catH) / 2);
+
+  const out = Buffer.alloc(side * side * 4, 0);
+  for (let y = 0; y < catH; y++) {
+    for (let x = 0; x < catW; x++) {
+      const si = ((minY + y) * w + (minX + x)) * 4;
+      const di = ((oy + y) * side + (ox + x)) * 4;
+      data.copy(out, di, si, si + 4);
+    }
+  }
+  return { data: out, size: side };
+}
+
 // ─── Nearest-neighbour resize to a square ────────────────────────────────────
 
-function nnResize(src, srcW, srcH, dstSize) {
-  const dst    = Buffer.alloc(dstSize * dstSize * 4, 0);
-  const scaleX = srcW / dstSize;
-  const scaleY = srcH / dstSize;
+function nnResize(src, srcSize, dstSize) {
+  const dst   = Buffer.alloc(dstSize * dstSize * 4, 0);
+  const scale = srcSize / dstSize;
 
   for (let dy = 0; dy < dstSize; dy++) {
-    const sy = Math.min(srcH - 1, Math.floor(dy * scaleY));
+    const sy = Math.min(srcSize - 1, Math.floor(dy * scale));
     for (let dx = 0; dx < dstSize; dx++) {
-      const sx = Math.min(srcW - 1, Math.floor(dx * scaleX));
-      const si = (sy * srcW + sx) * 4;
+      const sx = Math.min(srcSize - 1, Math.floor(dx * scale));
+      const si = (sy * srcSize + sx) * 4;
       const di = (dy * dstSize + dx) * 4;
       dst[di]     = src[si];
       dst[di + 1] = src[si + 1];
@@ -170,9 +210,19 @@ function cropSheet(sheet, { x, y, w, h }) {
 }
 
 function writePng(filePath, data, size) {
-  const png  = new PNG({ width: size, height: size, filterType: -1 });
-  png.data   = data;
+  const png = new PNG({ width: size, height: size, filterType: -1 });
+  png.data  = data;
   fs.writeFileSync(filePath, PNG.sync.write(png));
+}
+
+// ─── Per-frame processing ─────────────────────────────────────────────────────
+
+function processFrame(sheet, rect, outSize, pad) {
+  const crop         = cropSheet(sheet, rect);
+  const noBg         = removeBg(crop, rect.w, rect.h);
+  const { data, size } = tightSquare(noBg, rect.w, rect.h, pad);
+  const resized      = nnResize(data, size, outSize);
+  return resized;
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
@@ -189,11 +239,18 @@ const sheet = PNG.sync.read(fs.readFileSync(SRC));
 console.log(`  Source: ${sheet.width}×${sheet.height} px`);
 
 const manifest = {};
+let warnings   = 0;
 
 for (const [name, rect] of Object.entries(FRAMES)) {
-  const crop    = cropSheet(sheet, rect);
-  const noBg    = removeBg(crop, rect.w, rect.h);
-  const resized = nnResize(noBg, rect.w, rect.h, OUT_SIZE);
+  const resized = processFrame(sheet, rect, OUT_SIZE, CAT_PAD);
+
+  // Quick sanity check — count transparent pixels
+  let transp = 0;
+  for (let i = 3; i < resized.length; i += 4) if (resized[i] === 0) transp++;
+  if (transp < OUT_SIZE * OUT_SIZE * 0.05) {
+    console.warn(`  ⚠️  ${name}: only ${transp} transparent px — background removal may have failed`);
+    warnings++;
+  }
 
   const filename = `sprites/${name}.png`;
   writePng(path.join(ROOT, 'assets', filename), resized, OUT_SIZE);
@@ -202,13 +259,11 @@ for (const [name, rect] of Object.entries(FRAMES)) {
 
 fs.writeFileSync(JSON_OUT, JSON.stringify(manifest, null, 2));
 
-const iconRect    = FRAMES['idle_1'];
-const iconCrop    = cropSheet(sheet, iconRect);
-const iconNoBg    = removeBg(iconCrop, iconRect.w, iconRect.h);
-const iconResized = nnResize(iconNoBg, iconRect.w, iconRect.h, ICON_SIZE);
-writePng(ICON_OUT, iconResized, ICON_SIZE);
+const iconData = processFrame(sheet, FRAMES['idle_1'], ICON_SIZE, CAT_PAD * 2);
+writePng(ICON_OUT, iconData, ICON_SIZE);
 
 console.log(`✅  Sliced ${Object.keys(FRAMES).length} frames → assets/sprites/`);
 console.log(`   Output  : ${OUT_SIZE}×${OUT_SIZE} px (nearest-neighbour, transparent bg)`);
 console.log(`   Manifest: assets/spritesheet.json`);
 console.log(`   Icon    : assets/icon.png (${ICON_SIZE}×${ICON_SIZE})`);
+if (warnings) console.warn(`   ⚠️  ${warnings} frame(s) may need attention (see above)`);
